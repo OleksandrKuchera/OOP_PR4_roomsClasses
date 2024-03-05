@@ -1,11 +1,3 @@
-// generateRandomLichilnikCounts() {
-//     for (let room of this.rooms) {
-//         if (room.lichilnik === 'Газ' || room.lichilnik === 'Вода' || room.lichilnik === 'Світло') {
-//             room.lichilnikCount = Math.floor(Math.random() * 1000); // Приклад випадкового числа від 0 до 999
-//         }
-//     }
-// }
-
 class Room {
     constructor(type, dwelling,lichilnik) {
         this.type = type;
