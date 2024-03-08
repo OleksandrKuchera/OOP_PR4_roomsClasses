@@ -7,10 +7,10 @@ class Room {
 }
 
 class RoomRectangular extends Room {
-    constructor(type, formaRoom, lengthRoom, widthRoom, dwelling,lichilnik,) {
+    constructor(type, lengthRoom, widthRoom, dwelling,lichilnik,) {
         super(type, dwelling, lichilnik); 
         this.lichilnikCounts = this.generateRandomLichilnikCounts()
-        this.formaRoom = formaRoom;
+        this.formaRoom = this.getForm();
         this.lengthRoom = lengthRoom;
         this.widthRoom = widthRoom;
         this.areaRoom = this.calculateArea();
@@ -30,13 +30,17 @@ class RoomRectangular extends Room {
         return random
     }
 
+    getForm(){
+        return 'Прямокутна кімната'
+    }
+
 }
 
 class RoomCircular extends Room {
-    constructor(type, formaRoom, radius, dwelling,lichilnik) {
+    constructor(type, radius, dwelling,lichilnik) {
         super(type, dwelling,lichilnik);
         this.lichilnikCounts = this.generateRandomLichilnikCounts();
-        this.formaRoom = formaRoom;
+        this.formaRoom = this.getForm();
         this.radius = radius;
         this.areaRoom = this.calculateArea();
     }
@@ -53,6 +57,10 @@ class RoomCircular extends Room {
         }
         let random =Math.floor(Math.random() * 1000)
         return random
+    }
+
+    getForm(){
+        return 'Кругал кімната'
     }
 }
 
@@ -91,71 +99,40 @@ class House {
     }
 
     countRoomOneForm() {
-        let totalRectangular = 0
-        let totalCircular = 0
-        let totalBox = 0
+        let roomForms = {
+            'Прямокутна кімната': 0,
+            'Кругал кімната': 0
+        };
         for(let room of this.rooms) {
-            if(room.formaRoom === 'Прямокутна' || room.formaRoom === 'Прямокутний' || room.formaRoom === 'Прямокутник') {
-                totalRectangular++;
-            }
-            if(room.formaRoom === 'Кругла' || room.formaRoom === 'Круглий' || room.formaRoom === 'Кругле' || room.formaRoom === 'Круг') {
-                totalCircular++;
-            }
-            if(room.formaRoom === 'Квадрат' || room.formaRoom === 'Квадратна' || room.formaRoom === 'Квадратний') {
-                totalBox++;
-            }
+            roomForms[room.formaRoom]++;
         }
-        console.log(`Кількість кімнат за формую *Прямоктник* : ${totalRectangular}`)
-        console.log(`Кількість кімнат за формую *Круг* :${totalCircular}`)
-        console.log(`Кількість кімнат за формую *Квадрат* :${totalBox}`)
+        for (let form in roomForms) {
+            console.log(`Кількість кімнат за формую *${form}* : ${roomForms[form]}`)
     }
+}
 
     
 
     countRoomOneType() {
-        let totalKichen = 0
-        let totalHol = 0
-        let totalСorridor = 0
-        let totalPantry = 0
-        let totalBath = 0
-        let totalBedroom = 0 
-        let totalChildren = 0
-        let totalDining = 0
+        let roomTypes = {
+            'Кухня': 0,
+            'Зал': 0,
+            'Коридор': 0,
+            'Кладовка': 0,
+            'Ванна': 0,
+            'Спальня': 0,
+            'Дитяча': 0,
+            'Столова': 0
+        };
 
-        for(let room of this.rooms) {
-            if(room.type === 'Кухня' ) {
-                totalKichen++;
-            }
-            if(room.type === 'Зал') {
-                totalHol++;
-            }
-            if(room.type === 'Коридор') {
-                totalСorridor++;
-            }
-            if(room.type === 'Кладовка') {
-                totalPantry++;
-            }
-            if(room.type === 'Ванна') {
-                totalBath++;
-            }
-            if(room.type === 'Спальня') {
-                totalBedroom++;
-            }
-            if(room.type === 'Дитяча') {
-                totalChildren++;
-            }
-            if(room.type === 'Столова') {
-                totalDining++;
+        for (let room of this.rooms) {
+            if (room.type in roomTypes) {
+                roomTypes[room.type]++;
             }
         }
-        console.log(`Кількість *Кухонь* : ${totalKichen}`)
-        console.log(`Кількість *Залів* : ${totalHol}`)
-        console.log(`Кількість *Коридорів* : ${totalСorridor}`)
-        console.log(`Кількість *Кладовок* : ${totalPantry}`)
-        console.log(`Кількість *Ванн* : ${totalBath}`)
-        console.log(`Кількість *Спальні* : ${totalBedroom}`)
-        console.log(`Кількість *Дитячих* : ${totalChildren}`)
-        console.log(`Кількість *Столових* : ${totalDining}`)
+        for (let room in roomTypes) {
+            console.log(`Кількість кімнат за формую *${room}* : ${roomTypes[room]}`)
+    }
     }
 
     
@@ -164,19 +141,19 @@ class House {
 //task 1
 const house = new House();
 console.log('--')
-const roomKitchen = new RoomRectangular('Кухня', 'Прямокутна', 25, 20, 'Нежилий','Газу');
+const roomKitchen = new RoomRectangular('Кухня', 25, 20, 'Нежилий','Газу');
 house.addRoom(roomKitchen);
 
-const roomСorridor = new RoomRectangular('Коридор', 'Прямокутний', 10, 5, 'Нежилий','Світла');
+const roomСorridor = new RoomRectangular('Коридор', 10, 5, 'Нежилий','Світла');
 house.addRoom(roomСorridor);
 
-const roomHol = new RoomCircular('Зал', 'Кругла', 30, 'Жилий','Нема');
+const roomHol = new RoomCircular('Зал', 30, 'Жилий','Нема');
 house.addRoom(roomHol);
 
-const roomSleeping = new RoomCircular('Спальня', 'Кругла', 25, 'Жилий','Нема');
+const roomSleeping = new RoomCircular('Спальня', 25, 'Жилий','Нема');
 house.addRoom(roomSleeping);
 
-const roomBath = new RoomRectangular('Ванна', 'Квадратна', 8, 8, 'Нежилий','Води');
+const roomBath = new RoomRectangular('Ванна',8, 8, 'Нежилий','Води');
 house.addRoom(roomBath);
 
 //task 2
